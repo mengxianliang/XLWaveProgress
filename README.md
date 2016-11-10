@@ -1,2 +1,2 @@
 # XLWaveProgress
- ![image](XLWaveProgress/1.gif)
+ ![image](https://raw.githubusercontent.com/mengxianliang/XLWaveProgress/master/1.gif)
