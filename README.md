@@ -1,6 +1,6 @@
 # XLWaveProgress
 
-### 显示效果如下
+### 显示效果如下：
 
 ![image](https://github.com/mengxianliang/XLWaveProgress/blob/master/GIF/1.gif)
  
