@@ -163,8 +163,8 @@
     _progress = progress;
 }
 
-- (void)setWaveBackGroundColor:(UIColor *)waveBackGroundColor {
-    self.backgroundColor = waveBackGroundColor;
+- (void)setWaveBackgroundColor:(UIColor *)waveBackgroundColor {
+    self.backgroundColor = waveBackgroundColor;
 }
 
 - (void)setBackWaveColor:(UIColor *)backWaveColor {

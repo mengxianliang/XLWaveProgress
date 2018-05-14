@@ -53,8 +53,8 @@
     _textLabel.textColor = textColor;
 }
 
-- (void)setWaveBackGroundColor:(UIColor *)waveBackGroundColor {
-    _wave.waveBackGroundColor = waveBackGroundColor;
+- (void)setWaveBackgroundColor:(UIColor *)waveBackgroundColor {
+    _wave.waveBackgroundColor = waveBackgroundColor;
 }
 
 - (void)setBackWaveColor:(UIColor *)backWaveColor {

@@ -33,7 +33,7 @@
     _waveProgress.center = CGPointMake(waveContainer.bounds.size.width/2.0f, waveContainer.bounds.size.height/2.0f);
     _waveProgress.progress = 0.0f;
     //波浪背景颜色，深绿色
-    _waveProgress.waveBackGroundColor = [UIColor colorWithRed:96/255.0f green:159/255.0f blue:150/255.0f alpha:1];
+    _waveProgress.waveBackgroundColor = [UIColor colorWithRed:96/255.0f green:159/255.0f blue:150/255.0f alpha:1];
     //前层波浪颜色
     _waveProgress.backWaveColor = [UIColor colorWithRed:136/255.0f green:199/255.0f blue:190/255.0f alpha:1];
     //后层波浪颜色

@@ -15,17 +15,17 @@
  */
 @property (assign,nonatomic) CGFloat progress;
 /**
- 显示在前面的波浪颜色
+ 前层波浪颜色
  */
 @property (nonatomic ,strong) UIColor *frontWaveColor;
 /**
- 显示在后面的波浪颜色
+ 后层波浪颜色
  */
 @property (nonatomic ,strong) UIColor *backWaveColor;
 /**
  波浪背景色
  */
-@property (nonatomic ,strong) UIColor *waveBackGroundColor;
+@property (nonatomic ,strong) UIColor *waveBackgroundColor;
 
 /**
  开始
