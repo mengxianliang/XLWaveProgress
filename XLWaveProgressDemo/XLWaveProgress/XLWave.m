@@ -16,22 +16,17 @@
  这个效果主要的思路是添加两条曲线 一条正玄曲线、一条余弦曲线 然后在曲线下添加深浅不同的背景颜色，从而达到波浪显示的效果
  */
 
-#define BackGroundColor [UIColor colorWithRed:96/255.0f green:159/255.0f blue:150/255.0f alpha:1]
-#define WaveColor1 [UIColor colorWithRed:136/255.0f green:199/255.0f blue:190/255.0f alpha:1]
-#define WaveColor2 [UIColor colorWithRed:28/255.0 green:203/255.0 blue:174/255.0 alpha:1]
-
-
 #import "XLWave.h"
 
 
 @interface XLWave ()
 {
     //前面的波浪
-    CAShapeLayer *_waveLayer1;
-    CAShapeLayer *_waveLayer2;
-    
+    CAShapeLayer *_backWaveLayer;
+    //后面的波浪
+    CAShapeLayer *_frontWaveLayer;
+    //定时刷新器
     CADisplayLink *_disPlayLink;
-    
     /**
      曲线的振幅
      */
@@ -48,7 +43,6 @@
      曲线偏距
      */
     CGFloat _waveY;
-    
     /**
      曲线移动速度
      */
@@ -59,41 +53,32 @@
 
 @implementation XLWave
 
--(instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         [self buildUI];
-        [self buildData];
+        [self configWave];
     }
     return self;
 }
 
 //初始化UI
--(void)buildUI
-{
-    
+-(void)buildUI {
     //初始化波浪
     //底层
-    _waveLayer1 = [CAShapeLayer layer];
-    _waveLayer1.fillColor = WaveColor1.CGColor;
-    _waveLayer1.strokeColor = WaveColor1.CGColor;
-    [self.layer addSublayer:_waveLayer1];
+    _backWaveLayer = [CAShapeLayer layer];
+    [self.layer addSublayer:_backWaveLayer];
     
     //上层
-    _waveLayer2 = [CAShapeLayer layer];
-    _waveLayer2.fillColor = WaveColor2.CGColor;
-    _waveLayer2.strokeColor = WaveColor2.CGColor;
-    [self.layer addSublayer:_waveLayer2];
+    _frontWaveLayer = [CAShapeLayer layer];
+    [self.layer addSublayer:_frontWaveLayer];
     
     //画了个圆
     self.layer.cornerRadius = self.bounds.size.width/2.0f;
     self.layer.masksToBounds = true;
-    self.backgroundColor = BackGroundColor;
 }
 
 //初始化数据
--(void)buildData
-{
+- (void)configWave {
     //振幅
     _waveAmplitude = 10;
     //角速度
@@ -103,14 +88,10 @@
     //初相
     _waveX = 0;
     //x轴移动速度
-    _waveMoveSpeed = _wavePalstance * 10;
-    //以屏幕刷新速度为周期刷新曲线的位置
-    _disPlayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateWave:)];
-    [_disPlayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+    _waveMoveSpeed = _wavePalstance * 5;
 }
 
--(void)updateWave:(CADisplayLink *)link
-{
+- (void)updateWave:(CADisplayLink *)link {
     _waveX += _waveMoveSpeed;
     [self updateWaveY];
     [self updateWave1];
@@ -148,7 +129,7 @@
     CGPathAddLineToPoint(path, nil, waterWaveWidth, self.bounds.size.height);
     CGPathAddLineToPoint(path, nil, 0, self.bounds.size.height);
     CGPathCloseSubpath(path);
-    _waveLayer1.path = path;
+    _backWaveLayer.path = path;
     CGPathRelease(path);
 }
 
@@ -171,34 +152,60 @@
     CGPathAddLineToPoint(path, nil, waterWaveWidth, self.bounds.size.height);
     CGPathAddLineToPoint(path, nil, 0, self.bounds.size.height);
     CGPathCloseSubpath(path);
-    _waveLayer2.path = path;
+    _frontWaveLayer.path = path;
     CGPathRelease(path);
     
 }
 
--(void)setProgress:(CGFloat)progress
-{
+#pragma mark -
+#pragma mark Setter
+- (void)setProgress:(CGFloat)progress {
     _progress = progress;
 }
 
--(void)stop
-{
+- (void)setWaveBackGroundColor:(UIColor *)waveBackGroundColor {
+    self.backgroundColor = waveBackGroundColor;
+}
+
+- (void)setBackWaveColor:(UIColor *)backWaveColor {
+    _backWaveLayer.fillColor = backWaveColor.CGColor;
+    _backWaveLayer.strokeColor = backWaveColor.CGColor;
+}
+
+- (void)setFrontWaveColor:(UIColor *)frontWaveColor {
+    _frontWaveLayer.fillColor = frontWaveColor.CGColor;
+    _frontWaveLayer.strokeColor = frontWaveColor.CGColor;
+}
+
+#pragma mark -
+#pragma mark 功能方法
+
+//开始
+- (void)start {
+    //以屏幕刷新速度为周期刷新曲线的位置
+    _disPlayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(updateWave:)];
+    [_disPlayLink addToRunLoop:[NSRunLoop mainRunLoop] forMode:NSRunLoopCommonModes];
+}
+
+//停止
+- (void)stop {
     if (_disPlayLink) {
         [_disPlayLink invalidate];
         _disPlayLink = nil;
     }
 }
 
+
 -(void)dealloc
 {
     [self stop];
-    if (_waveLayer1) {
-        [_waveLayer1 removeFromSuperlayer];
-        _waveLayer1 = nil;
+    if (_backWaveLayer) {
+        [_backWaveLayer removeFromSuperlayer];
+        _backWaveLayer = nil;
     }
-    if (_waveLayer2) {
-        [_waveLayer2 removeFromSuperlayer];
-        _waveLayer2 = nil;
+    if (_frontWaveLayer) {
+        [_frontWaveLayer removeFromSuperlayer];
+        _frontWaveLayer = nil;
     }
     
 }

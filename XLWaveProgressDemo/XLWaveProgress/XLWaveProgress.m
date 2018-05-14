@@ -9,8 +9,7 @@
 #import "XLWaveProgress.h"
 #import "XLWave.h"
 
-@interface XLWaveProgress ()
-{
+@interface XLWaveProgress () {
     XLWave *_wave;
     UILabel *_textLabel;
 }
@@ -19,41 +18,64 @@
 
 @implementation XLWaveProgress
 
--(instancetype)initWithFrame:(CGRect)frame
-{
+- (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         [self buildLayout];
     }
     return self;
 }
 
--(void)buildLayout
-{
-    self.backgroundColor = [UIColor colorWithRed:190/255.0f green:232/255.0f blue:231/255.0f alpha:0.8];
-    self.layer.cornerRadius = self.bounds.size.width/2.0f;
-    self.layer.masksToBounds = true;
+- (void)buildLayout {
     
-    CGFloat waveWidth = self.bounds.size.width * 0.8f;
-    _wave = [[XLWave alloc] initWithFrame:CGRectMake(0, 0, waveWidth, waveWidth)];
+    _wave = [[XLWave alloc] initWithFrame:self.bounds];
     _wave.center = CGPointMake(self.bounds.size.width/2.0f, self.bounds.size.width/2.0f);
     [self addSubview:_wave];
     
     _textLabel = [[UILabel alloc] initWithFrame:self.bounds];
     _textLabel.textAlignment = NSTextAlignmentCenter;
-    _textLabel.textColor = [UIColor whiteColor];
-    _textLabel.font = [UIFont boldSystemFontOfSize:50];
     [self addSubview:_textLabel];
 }
 
--(void)setProgress:(CGFloat)progress
-{
+#pragma mark -
+#pragma mark Setter
+
+- (void)setProgress:(CGFloat)progress {
     _progress = progress;
     _wave.progress = progress;
     _textLabel.text = [NSString stringWithFormat:@"%.0f%%",progress*100];
 }
 
--(void)dealloc
-{
+- (void)setTextFont:(UIFont *)textFont {
+    _textLabel.font = textFont;
+}
+
+- (void)setTextColor:(UIColor *)textColor {
+    _textLabel.textColor = textColor;
+}
+
+- (void)setWaveBackGroundColor:(UIColor *)waveBackGroundColor {
+    _wave.waveBackGroundColor = waveBackGroundColor;
+}
+
+- (void)setBackWaveColor:(UIColor *)backWaveColor {
+    _wave.backWaveColor = backWaveColor;
+}
+
+- (void)setFrontWaveColor:(UIColor *)frontWaveColor {
+    _wave.frontWaveColor = frontWaveColor;
+}
+
+#pragma mark -
+#pragma mark 功能方法
+- (void)start {
+    [_wave start];
+}
+
+- (void)stop {
+    [_wave stop];
+}
+
+- (void)dealloc {
     [_wave stop];
     for (UIView *view in self.subviews) {
         [view removeFromSuperview];
